@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Валентинка</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fce4ec; /* Нежно-розовый фон */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            position: relative;
+            width: 400px;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.08);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        h1 {
+            color: #880e4f; /* Темно-розовый цвет текста */
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        p {
+            color: #4a148c; /* Фиолетовый цвет текста */
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .heart-container {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .heart {
+            background-color: #d50000; /* Ярко-красный */
+            display: inline-block;
+            height: 60px;
+            width: 60px;
+            transform: rotate(-45deg);
+            position: relative;
+            animation: beat 1.2s cubic-bezier(0.4, 0, 1, 1) infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            background-color: #d50000;
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            position: absolute;
+        }
+        
+        .heart::before {
+            top: -30px;
+            left: 0;
+        }
+        
+        .heart::after {
+            left: 30px;
+            top: 0;
+        }
+
+        @keyframes beat {
+            0% { transform: scale(1) rotate(-45deg); }
+            25% { transform: scale(1.1) rotate(-45deg); }
+            50% { transform: scale(1.2) rotate(-45deg); }
+            75% { transform: scale(1.1) rotate(-45deg); }
+            100% { transform: scale(1) rotate(-45deg); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color);
+            opacity: 0.8;
+            animation: fall 8s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Блок с конфетти -->
+<div id="confetti-area"></div>
+
+<div class="card">
+    <div class="heart-container">
+        <div class="heart"></div>
+    </div>
+    <h1>С Днём святого Валентина!</h1>
+    <p>Пусть каждый твой день будет наполнен теплом, улыбками и самыми нежными чувствами.</p>
+    <p style="font-weight: bold; margin-top: 20px;">❤️</p>
+</div>
+
+<script>
+// Скрипт для генерации падающих конфетти
+const colors = ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#E74C3C', '#9B59B6'];
+const confettiArea = document.getElementById('confetti-area');
+
+function createConfetti() {
+    const piece = document.createElement('div');
+    piece.classList.add('confetti');
+    
+    // Случайные параметры для каждой частицы
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+    piece.style.width = Math.random() * 12 + 4 + 'px';
+    piece.style.height = piece.style.width;
+    piece.style.animationDuration = Math.random() * 4 + 4 + 's'; /* от 4 до 8 секунд */
+    piece.style.animationDelay = Math.random() * 2 + 's';
+    
+    confettiArea.appendChild(piece);
+
+    // Удаляем элемент из DOM после завершения анимации, чтобы не перегружать страницу
+    setTimeout(() => {
+        if (piece.parentNode) {
+            piece.remove();
+        }
+    }, 10000); /* время чуть больше максимальной длительности падения */
+}
+
+// Создаем по одной частице каждые 200 миллисекунд
+setInterval(createConfetti, 200);
+</script>
+
+</body>
+</html>
